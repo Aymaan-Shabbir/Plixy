@@ -1,0 +1,14 @@
+# Local environment and secrets
+.venv/
+.env
+.streamlit/secrets.toml
+
+# Generated data and uploaded/downloaded media
+vector_db/
+downloads/
+*.mp3
+*.wav
+
+# Python cache
+__pycache__/
+*.py[cod]
