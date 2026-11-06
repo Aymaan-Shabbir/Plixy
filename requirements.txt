@@ -18,3 +18,5 @@ langchain-chroma
 langchain-text-splitters
 requests
 audioop-lts; python_version >= "3.13"
+youtube-transcript-api
+

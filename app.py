@@ -28,7 +28,7 @@ from core.extractor import (
 from core.summarize import summarize, generate_title
 from utils.audio_processor import process_input
 from utils.playlist_duration import calculate_playlist_duration
-
+from utils.youtube_transcript import fetch_youtube_transcript
 
 load_dotenv()
 
@@ -900,6 +900,7 @@ def run_pipeline(
     language,
     is_new_meeting,
     progress_callback=None,
+    transcript=None,
 ):
 
     def update_progress(value, message):
@@ -907,13 +908,19 @@ def run_pipeline(
         if progress_callback:
             progress_callback(value, message)
 
-    update_progress(0.05, "Preparing audio...")
+    if transcript is None:
 
-    chunks = process_input(source)
+        update_progress(0.05, "Preparing audio...")
 
-    update_progress(0.25, "Transcribing audio...")
+        chunks = process_input(source)
 
-    transcript = transcribe_all(chunks, language)
+        update_progress(0.25, "Transcribing audio...")
+
+        transcript = transcribe_all(chunks, language)
+
+    else:
+
+        update_progress(0.25, "Using YouTube captions...")
 
     if not transcript or not transcript.strip():
 
@@ -1170,6 +1177,8 @@ with st.container(border=True):
 
             try:
 
+                transcript = None
+
                 if uploaded_file is not None:
 
                     suffix = Path(uploaded_file.name).suffix
@@ -1186,7 +1195,26 @@ with st.container(border=True):
 
                 else:
 
-                    source = source_url.strip()
+                    source = None
+                    caption_languages = (
+                        ["en"] if language == "english" else ["hi", "en"]
+                    )
+
+                    try:
+
+                        transcript = fetch_youtube_transcript(
+                            source_url.strip(),
+                            languages=caption_languages,
+                        )
+
+                    except Exception as error:
+
+                        raise RuntimeError(
+                            "YouTube captions could not be retrieved. "
+                            "Select 'Upload local file' and upload the "
+                            "recording to continue. "
+                            f"Details: {error}"
+                        ) from error
 
                 is_new = meeting_type == "Create new meeting"
 
@@ -1195,6 +1223,7 @@ with st.container(border=True):
                     language=language,
                     is_new_meeting=is_new,
                     progress_callback=update_pipeline_ui,
+                    transcript=transcript,
                 )
 
                 st.session_state.meeting = {
