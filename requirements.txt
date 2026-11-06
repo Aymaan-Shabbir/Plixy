@@ -17,3 +17,4 @@ sarvamai
 langchain-chroma
 langchain-text-splitters
 requests
+audioop-lts; python_version >= "3.13"
