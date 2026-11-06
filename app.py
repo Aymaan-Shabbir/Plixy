@@ -122,7 +122,8 @@ html, body, [data-testid="stAppViewContainer"] {
     font-weight: 700;
     font-style: italic;
     letter-spacing: -7px;
-    line-height: 1;
+    line-height: 1.12;
+    padding-top: 0.08em;
     color: var(--black);
 }
 
@@ -556,11 +557,13 @@ hr {
 @media (max-width: 768px) {
 
     .block-container {
-        padding: 1.5rem 1.2rem 3rem !important;
+        padding: 2.25rem 1.2rem 3rem !important;
     }
 
     .brand {
-        font-size: 4.2rem;
+        font-size: clamp(3rem, 12vw, 4.2rem);
+        line-height: 1.15;
+        padding-top: 0.08em;
         letter-spacing: -4px;
     }
 
@@ -634,7 +637,9 @@ hr {
     }
 
     .brand {
-        font-size: 3.5rem;
+        font-size: clamp(3rem, 12vw, 3.5rem);
+        line-height: 1.15;
+        padding-top: 0.08em;
     }
 
     .hero-title {
@@ -976,7 +981,7 @@ render_html(
         </div>
 
         <div class="top-meta">
-            MADE BY AYMAAN IBRAAHIM<br>
+            MADE BY AYMAAN SHABBIR<br>
             POWERED BY MISTRAL AI<br>
             VERSION 1.0 / 2026
         </div>
@@ -1612,7 +1617,7 @@ render_html(
         </div>
 
         <div class="footer-credit">
-            MADE BY AYMAAN IBRAAHIM
+            MADE BY AYMAAN SHABBIR
         </div>
 
         <div class="footer-powered">
